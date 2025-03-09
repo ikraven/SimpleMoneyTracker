@@ -1,0 +1,47 @@
+{
+  "configurations" : [
+    {
+      "id" : "62128FD9-8632-4925-AC7F-078B7696ACBF",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:SimpleMoneyTracker.xcodeproj",
+      "identifier" : "EC7962702D414153008556CA",
+      "name" : "SimpleMoneyTracker"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:SimpleMoneyTracker.xcodeproj",
+        "identifier" : "EC7962822D414155008556CA",
+        "name" : "SimpleMoneyTrackerTests"
+      }
+    },
+    {
+      "enabled" : false,
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:SimpleMoneyTracker.xcodeproj",
+        "identifier" : "EC79628C2D414155008556CA",
+        "name" : "SimpleMoneyTrackerUITests"
+      }
+    },
+    {
+      "enabled" : false,
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:SimpleMoneyTracker.xcodeproj",
+        "identifier" : "EC1C53B22D574E6E00FC8974",
+        "name" : "SimpleMoneyTrackerUnitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
