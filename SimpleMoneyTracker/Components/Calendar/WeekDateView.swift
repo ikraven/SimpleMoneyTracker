@@ -9,30 +9,32 @@ import SwiftUI
 
 struct WeekDateView: View {
     //MARK: - Variables
+    let minHeight: CGFloat = 80
+    
     
     let weekOffset: Int
     private let calendar = Calendar.current
     @Binding var selectedDay: Date
+    @State private var hStackWidth: CGFloat = 80 // Nueva variable para el ancho del HStack
     
     var body: some View {
         let dates = datesForWeek(offset: weekOffset)
-        GeometryReader { geometry in
-            HStack {
-                ForEach(dates, id: \.self) { date in
-                    VStack {
-                        DaysComponent(date: date, isCurrentDate: calendar.isDate( Date() , inSameDayAs: date) ? true : false, isSelected: calendar.isDate( selectedDay , inSameDayAs: date) ? true : false)
-                    }
-                    .frame(width: geometry.size.width / 9, height: 100)
-                    .onTapGesture {
-                        selectedDay = date
-                    }
+        HStack(spacing: 0) {
+            ForEach(dates, id: \.self) { date in
+                VStack {
+                    DaysComponent(date: date, 
+                                isCurrentDate: calendar.isDate(Date(), inSameDayAs: date),
+                                isSelected: calendar.isDate(selectedDay, inSameDayAs: date))
                 }
-                .id(selectedDay)
+                .frame(maxWidth: .infinity)
+                .frame(height: minHeight)
+                .onTapGesture {
+                    selectedDay = date
+                }
             }
-            .padding()
-            
+            .id(selectedDay)
         }
-        
+        .frame(maxWidth: .infinity)
     }
     
     

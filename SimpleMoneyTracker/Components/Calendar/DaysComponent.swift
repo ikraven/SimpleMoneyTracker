@@ -19,7 +19,7 @@ struct DaysComponent: View {
             VStack {
                 Text(date.dayOfWeek())
                     .font(.subheadline)
-                    .padding(.bottom)
+                    .padding(.bottom,1)
                 ZStack{
                         Circle()
                             .fill(isCurrentDate ? Color.mainColor : .primary)

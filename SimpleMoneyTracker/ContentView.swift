@@ -9,53 +9,59 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
-
+    //@Environment(\.modelContext) private var modelContext
+    @AppStorage("isFirstLaunch") private var isFirstLaunch = true
+    @State private var selectedTab = 0
     var body: some View {
-        NavigationSplitView {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+        ZStack{
+            TabView(selection: $selectedTab) {
+                Group{
+                    HomeView()
+                    .tabItem {
+                                        Label("Inicio", systemImage: "house.fill")
+                                    }
+                    .tag(0)
+                    DailyExpenseView()
+                        .tabItem{
+                            Label("Tendencias", systemImage: "chart.line.uptrend.xyaxis")
+                        }
+                        .tag(1)
+                    ExpenseCategoryListView()
+                        .tabItem{
+                            Label("Categorías", systemImage: "list.bullet")
+                        }
+                        .tag(2)
+                    ExpensesListView()
+                        .tabItem{
+                            Label("Ajustes", systemImage: "gearshape")
+                        }
+                        .tag(4)
+                    SettingsView()
+                        .tabItem{
+                            Label("Ajustes", systemImage: "gearshape")
+                        }
+                        .tag(5)
                 }
-                .onDelete(perform: deleteItems)
-            }
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
-            }
-        } detail: {
-            Text("Select an item")
-        }
-    }
+                .toolbarBackground(.thinMaterial, for: .tabBar)
+                .toolbarBackground(.visible, for: .tabBar)
 
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+            }
+            
+            .animation(.bouncy, value: selectedTab)
+            .accentColor(Color.mainColor) // Cambia el color de los íconos seleccionados
+            .fullScreenCover(isPresented: $isFirstLaunch){
+                LandingView()
+                    .onTapGesture{
+                        isFirstLaunch.toggle()
+                    }
+      
             }
         }
+                
     }
 }
 
 #Preview {
+
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
 }

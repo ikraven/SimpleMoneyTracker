@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct CategoryCircleComponent: View {
+    @State var category: Category
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack{
+            Circle()
+                .fill(category.getColor())
+            Text(category.emoji ?? "💶")
+        }
     }
 }
 
 #Preview {
-    CategoryCircleComponent()
+    
+    CategoryCircleComponent(category: PreviewMockData.shared.monsterCategory)
 }

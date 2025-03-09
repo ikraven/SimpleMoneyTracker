@@ -125,9 +125,9 @@ struct SummaryView: View {
                                             configurations: ModelConfiguration(isStoredInMemoryOnly: true))
     let testContext = testContainer.mainContext
 
-    let monsterCategory = Category(id: UUID(), name: "Monster", color: "E7575E")
+    let monsterCategory = Category(id: UUID(), name: "Monster", color: "E7575E", emoji: "💧")
     
-    let dogFoodCategory = Category(id: UUID(), name: "Dog Food", color: "348ceb")
+    let dogFoodCategory = Category(id: UUID(), name: "Dog Food", color: "348ceb", emoji: "💧")
     
     testContainer.mainContext.insert(monsterCategory)
     

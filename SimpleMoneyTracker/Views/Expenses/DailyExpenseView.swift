@@ -10,11 +10,13 @@ import SwiftData
 
 struct DailyExpenseView: View {
     @Environment(\.modelContext) private var modelContext
-    
+    @AppStorage("isFirstLaunch") private var isFirstLaunch = false
     
     private var expensesService: ExpensesService {
         ExpensesService(modelContext: modelContext)
     }
+    
+    private let calendar = Calendar.current
     
     @State private var expenses: [Expense] = []
     
@@ -24,55 +26,159 @@ struct DailyExpenseView: View {
     
     @State private var currentDate: Date = Date()
     
+    // Separamos las variables de estado
+        @GestureState private var dragTranslation: CGFloat = 0 // Para el arrastre en tiempo real
+        @State private var dragOffsetAmount: CGFloat = 0     // Para el offset final del ZStack
+        @State private var contentOffset: CGFloat = 0        // Para el offset del ScrollView
+        @State private var rectangleFrame: CGRect = .zero    // Marco del Rectangle
+    
     
     var body: some View {
-        VStack{
-            HStack{
-                Spacer()
-                Button{
-                    isSheetPresented.toggle()
-                } label:{
-                    Image(systemName: "plus")
-                        .imageScale(.large)
-                }.padding(.trailing)
-            }
-            
-            WeekDateView(weekOffset: 0, selectedDay: $currentDate)
-                .frame(height: 100)
-                .padding(.bottom)
-                .onChange(of: currentDate ){oldValue, newValue in
-                    expenses = expensesService.getExpenses(for: currentDate)
+        VStack(spacing: 0) {
+            VStack {
+                HStack{
+                    Text("\(currentDate.monthText()) \(currentDate.yearText())")
+                        .padding(.leading)
+                        .bold()
+                    Spacer()
+                    Button{
+                        isFirstLaunch.toggle()
+                    } label:{
+                        Image(systemName: "gear")
+                            .imageScale(.large)
+                    }.padding(.trailing)
                 }
-
-            ZStack(alignment: .bottomTrailing) {
-                ScrollView{
-                    ForEach(expenses) { expense in
-                        ExpenseDetailComponent(expense: expense)
-                            .contextMenu{
-                                Button {
-                                    expensesService.deleteExpense(expense)
-                                    expenses = expensesService.getExpenses(for: currentDate)
-                                } label: {
-                                    Label("Eliminar", systemImage: "delete.left")
-                                }
-                            }
-                        
+                
+                WeekDateView(weekOffset: 0, selectedDay: $currentDate)
+                    .frame(height: 100)
+                    .onChange(of: currentDate ){oldValue, newValue in
+                        expenses = expensesService.getExpenses(for: currentDate)
                     }
+            }
+            .background(Color(.systemGray6))
+            
+            
+            ZStack(alignment: .bottomTrailing) {
+                VStack{
+                    // Superponemos el área de arrastre con ZStack
+                    ZStack {
+                        Rectangle()
+                            .frame(width: 100, height: 2.5)
+                            .padding(.top, 10)
+                            .background(
+                                GeometryReader { geo in
+                                    Color.clear
+                                        .onAppear {
+                                            // Marco del Rectangle
+                                            let rectFrame = geo.frame(in: .named("zstack"))
+                                            self.rectangleFrame = rectFrame
+                                        }
+                                }
+                            )
+                        
+                        // Área invisible para arrastre, superpuesta
+                        Color.clear
+                            .frame(height: 50) // Altura del área de arrastre
+                            .background(
+                                GeometryReader { geo in
+                                    Color.clear
+                                        .onAppear {
+                                            // Combinamos el marco del Rectangle con esta área
+                                            let clearFrame = geo.frame(in: .named("zstack"))
+                                            self.rectangleFrame = self.rectangleFrame.union(clearFrame)
+                                        }
+                                }
+                            )
+                    }
+                    .onTapGesture {
+                        if dragOffsetAmount >= 500{
+                            dragOffsetAmount = 0
+                        }
+                    }
+                    
+                    if expenses.isEmpty {
+                        ContentUnavailableView("Gastos", systemImage: "plus.circle", description: Text("Añade tus gastos para llevar tu control de lo que gastas."))
+                            .onTapGesture {
+                                isSheetPresented.toggle()
+                            }
+                    } else {
+                        ScrollView {
+                            GeometryReader { geometry in
+                                Color.clear.preference(key: ScrollOffsetPreferenceKey.self,
+                                                       value: geometry.frame(in: .named("scroll")).minY)
+                            }
+                            .frame(height: 0)
+                            
+                        
+                            ForEach(expenses) { expense in
+                                ExpenseDetailComponent(expense: expense)
+                                    .contextMenu {
+                                        Button {
+                                            expensesService.deleteExpense(expense)
+                                            triggerHapticFeedback()
+                                            expenses = expensesService.getExpenses(for: currentDate)
+                                        } label: {
+                                            Label("Eliminar", systemImage: "delete.left")
+                                        }
+                                    }
+                            }
+                        }
+                        .coordinateSpace(name: "scroll")
+                        .onPreferenceChange(ScrollOffsetPreferenceKey.self) { value in
+                            contentOffset = value
+                        }
+                    }
+
                 }
                 Button {
                     isSheetPresented.toggle()
-                              } label: {
-                                  Image(systemName: "plus")
-                                    //Add the following modifiers for a circular button.
-                                    .font(.title.weight(.semibold))
-                                    .padding()
-                                    .background(Color.mainColor)
-                                    .foregroundColor(.white)
-                                    .clipShape(Circle())
-                              }
-                              .padding(.trailing)
+                } label: {
+                    Image(systemName: "plus")
+                        .font(.title.weight(.semibold))
+                        .padding()
+                        .background(Color.mainColor)
+                        .foregroundColor(.white)
+                        .clipShape(.circle)
+                        .shadow(color: Color.mainColor.opacity(0.6), radius: 10, x: 0, y: 0)
+                }
+                .padding(.trailing)
+            }
 
-            }//:: - Zstack
+
+            .background(Color(.systemBackground))
+            .clipShape(UnevenRoundedRectangle(
+                topLeadingRadius: 15,
+                bottomLeadingRadius: 0,
+                bottomTrailingRadius: 0,
+                topTrailingRadius: 15 )
+            )
+            .background(Color(.systemGray6))
+            .offset(y: dragOffsetAmount + dragTranslation) // Combinamos offset final y arrastre en tiempo real
+            .animation(.interactiveSpring(), value: dragOffsetAmount)
+            .gesture(
+              
+                DragGesture()
+                    .updating($dragTranslation) { value, state, _ in
+                        // Solo actualizamos si el arrastre comienza en el Rectangle
+                        if rectangleFrame.contains(value.startLocation) && value.translation.height > 0 {
+                            state = value.translation.height
+                        }
+                    }
+                    .onEnded { value in
+                        // Finalizamos el offset solo si comenzó en el Rectangle
+                        if rectangleFrame.contains(value.startLocation) {
+                            if value.translation.height > 500 {
+                                dragOffsetAmount = 500
+                                triggerHapticFeedback()
+                            } else {
+                                dragOffsetAmount = 0
+                            }
+                        }
+                    }
+            )
+            .coordinateSpace(name: "zstack") // Espacio de coordenadas nombrado para el ZStack
+            
+            
             Spacer()
             HStack{
                 Text("Total:")
@@ -81,7 +187,8 @@ struct DailyExpenseView: View {
             }
 
         }//:: - Vstac
-        .frame(maxHeight: .infinity, alignment: .top)
+        .background(Color(.systemGray6))
+        //.frame(maxHeight: .infinity, alignment: .top)
         .onAppear {
             expenses = expensesService.getExpenses(for: currentDate)
         }
@@ -97,48 +204,46 @@ struct DailyExpenseView: View {
     private func getTotal() -> Double{
         return expenses.reduce(0.0) { $0 + $1.amount }
     }
+    private func triggerHapticFeedback() {
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)  // Puede ser .success, .warning o .error
+    }
 }
 
-#Preview {
-    let testContainer = try! ModelContainer(for: Expense.self,
-                                            configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+#Preview("Data") {
+    
+    let testContainer = PreviewMockData.shared.testContainer
+    
     let testContext = testContainer.mainContext
 
-    let monsterCategory = Category(id: UUID(), name: "Monster", color: "E7575E")
+    let monsterCategory = PreviewMockData.shared.monsterCategory
     
-    let dogFoodCategory = Category(id: UUID(), name: "Dog Food", color: "348ceb")
+    let dogFoodCategory = PreviewMockData.shared.dogFoodCategory
     
     testContainer.mainContext.insert(monsterCategory)
     
     testContainer.mainContext.insert(dogFoodCategory)
     
-    let expense = Expense(amount: 2, date: Date(), category: monsterCategory)
-    
-    testContext.insert(expense)
-    
-    testContext.insert(Expense(amount: 1.8, date: Date(), category: dogFoodCategory))
-    testContext.insert(Expense(amount: 1.8, date: Date(), category: dogFoodCategory))
-    
-    testContext.insert(Expense(amount: 1.8, date: Date(), category: dogFoodCategory))
-    
-    testContext.insert(Expense(amount: 1.8, date: Date(), category: dogFoodCategory))
-    
-    testContext.insert(Expense(amount: 10, date: Date(), category: monsterCategory))
+   
+    let arrayExpenses = PreviewMockData.shared.sampleExpenses
 
-    testContext.insert(Expense(amount: 1.8, date: Date(), category: dogFoodCategory))
-    
-    testContext.insert(Expense(amount: 5, date: Date(), category: monsterCategory))
-
-    
-    testContext.insert(Expense(amount: 1.8, date: Date(), category: dogFoodCategory))
-    
-    testContext.insert(Expense(amount: 5, date: Date(), category: monsterCategory))
-
-    
-    let taskService = ExpensesService(modelContext: testContext)
-                
-    
+    for expense in arrayExpenses{
+        testContext.insert(expense)
+    }
+      
     return DailyExpenseView()
         .modelContainer(testContainer)
 
+}
+#Preview("No Data") {
+    
+    DailyExpenseView()
+
+}
+
+private struct ScrollOffsetPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
+    }
 }

@@ -12,16 +12,24 @@ import SwiftData
 struct SimpleMoneyTrackerApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Category.self,
+            Expense.self,
+            ExpenseAgregate.self,
+            Account.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            // Inicializar datos por defecto
+            let initService = DataInitializationService(modelContext: container.mainContext)
+            initService.initializeDefaultData()
+            return container
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }()
+    
 
     var body: some Scene {
         WindowGroup {

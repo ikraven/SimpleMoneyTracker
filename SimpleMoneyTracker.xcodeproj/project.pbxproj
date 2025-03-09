@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXContainerItemProxy section */
+		EC1C53B72D574E6E00FC8974 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EC7962692D414153008556CA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EC7962702D414153008556CA;
+			remoteInfo = SimpleMoneyTracker;
+		};
 		EC7962842D414155008556CA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EC7962692D414153008556CA /* Project object */;
@@ -24,14 +31,69 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EC1C53B32D574E6E00FC8974 /* SimpleMoneyTrackerUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleMoneyTrackerUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC4C07842D574F0500421E29 /* SimpleMoneyTracker.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = SimpleMoneyTracker.xctestplan; sourceTree = "<group>"; };
 		EC7962712D414153008556CA /* SimpleMoneyTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleMoneyTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC7962832D414155008556CA /* SimpleMoneyTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleMoneyTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EC79628D2D414155008556CA /* SimpleMoneyTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SimpleMoneyTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		EC4C07872D57502400421E29 /* Exceptions for "SimpleMoneyTracker" folder in "SimpleMoneyTrackerTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Models/Account.swift,
+				Models/Category.swift,
+				Models/Expense.swift,
+				Models/ExpenseAgregate.swift,
+			);
+			target = EC7962822D414155008556CA /* SimpleMoneyTrackerTests */;
+		};
+		EC4C078B2D57503B00421E29 /* Exceptions for "SimpleMoneyTracker" folder in "SimpleMoneyTrackerUnitTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Models/Account.swift,
+				Models/Category.swift,
+				Models/ExpenseAgregate.swift,
+			);
+			target = EC1C53B22D574E6E00FC8974 /* SimpleMoneyTrackerUnitTests */;
+		};
+		EC9C9C082D46548C00711166 /* Exceptions for "SimpleMoneyTracker" folder in "SimpleMoneyTrackerUITests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Components/Calendar/DaysComponent.swift,
+				Components/Calendar/WeekDateView.swift,
+				Components/Categories/CategoryCreateComponent.swift,
+				Components/Categories/CategorySelectorComponent.swift,
+				Components/Expenses/AddExpenseComponent.swift,
+				Components/Expenses/CategoryCircleComponent.swift,
+				Components/Expenses/ExpenseCreateSheetView.swift,
+				Components/Expenses/ExpenseDetailComponent.swift,
+				Models/Account.swift,
+				Models/Category.swift,
+				Models/Expense.swift,
+				Models/ExpenseAgregate.swift,
+				Views/Categories/ExpenseCategoryListView.swift,
+				Views/Expenses/DailyExpenseView.swift,
+				Views/Expenses/ExpensesListView.swift,
+			);
+			target = EC79628C2D414155008556CA /* SimpleMoneyTrackerUITests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		EC1C53B42D574E6E00FC8974 /* SimpleMoneyTrackerUnitTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = SimpleMoneyTrackerUnitTests;
+			sourceTree = "<group>";
+		};
 		EC7962732D414153008556CA /* SimpleMoneyTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EC4C07872D57502400421E29 /* Exceptions for "SimpleMoneyTracker" folder in "SimpleMoneyTrackerTests" target */,
+				EC9C9C082D46548C00711166 /* Exceptions for "SimpleMoneyTracker" folder in "SimpleMoneyTrackerUITests" target */,
+				EC4C078B2D57503B00421E29 /* Exceptions for "SimpleMoneyTracker" folder in "SimpleMoneyTrackerUnitTests" target */,
+			);
 			path = SimpleMoneyTracker;
 			sourceTree = "<group>";
 		};
@@ -40,14 +102,16 @@
 			path = SimpleMoneyTrackerTests;
 			sourceTree = "<group>";
 		};
-		EC7962902D414155008556CA /* SimpleMoneyTrackerUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SimpleMoneyTrackerUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		EC1C53B02D574E6E00FC8974 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EC79626E2D414153008556CA /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -75,9 +139,10 @@
 		EC7962682D414153008556CA = {
 			isa = PBXGroup;
 			children = (
+				EC4C07842D574F0500421E29 /* SimpleMoneyTracker.xctestplan */,
 				EC7962732D414153008556CA /* SimpleMoneyTracker */,
 				EC7962862D414155008556CA /* SimpleMoneyTrackerTests */,
-				EC7962902D414155008556CA /* SimpleMoneyTrackerUITests */,
+				EC1C53B42D574E6E00FC8974 /* SimpleMoneyTrackerUnitTests */,
 				EC7962722D414153008556CA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +153,7 @@
 				EC7962712D414153008556CA /* SimpleMoneyTracker.app */,
 				EC7962832D414155008556CA /* SimpleMoneyTrackerTests.xctest */,
 				EC79628D2D414155008556CA /* SimpleMoneyTrackerUITests.xctest */,
+				EC1C53B32D574E6E00FC8974 /* SimpleMoneyTrackerUnitTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +161,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		EC1C53B22D574E6E00FC8974 /* SimpleMoneyTrackerUnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EC1C53BB2D574E6E00FC8974 /* Build configuration list for PBXNativeTarget "SimpleMoneyTrackerUnitTests" */;
+			buildPhases = (
+				EC1C53AF2D574E6E00FC8974 /* Sources */,
+				EC1C53B02D574E6E00FC8974 /* Frameworks */,
+				EC1C53B12D574E6E00FC8974 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EC1C53B82D574E6E00FC8974 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EC1C53B42D574E6E00FC8974 /* SimpleMoneyTrackerUnitTests */,
+			);
+			name = SimpleMoneyTrackerUnitTests;
+			packageProductDependencies = (
+			);
+			productName = SimpleMoneyTrackerUnitTests;
+			productReference = EC1C53B32D574E6E00FC8974 /* SimpleMoneyTrackerUnitTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		EC7962702D414153008556CA /* SimpleMoneyTracker */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = EC7962972D414155008556CA /* Build configuration list for PBXNativeTarget "SimpleMoneyTracker" */;
@@ -153,9 +242,6 @@
 			dependencies = (
 				EC79628F2D414155008556CA /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				EC7962902D414155008556CA /* SimpleMoneyTrackerUITests */,
-			);
 			name = SimpleMoneyTrackerUITests;
 			packageProductDependencies = (
 			);
@@ -173,6 +259,10 @@
 				LastSwiftUpdateCheck = 1620;
 				LastUpgradeCheck = 1620;
 				TargetAttributes = {
+					EC1C53B22D574E6E00FC8974 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = EC7962702D414153008556CA;
+					};
 					EC7962702D414153008556CA = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -195,6 +285,8 @@
 			);
 			mainGroup = EC7962682D414153008556CA;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = EC7962722D414153008556CA /* Products */;
 			projectDirPath = "";
@@ -203,11 +295,19 @@
 				EC7962702D414153008556CA /* SimpleMoneyTracker */,
 				EC7962822D414155008556CA /* SimpleMoneyTrackerTests */,
 				EC79628C2D414155008556CA /* SimpleMoneyTrackerUITests */,
+				EC1C53B22D574E6E00FC8974 /* SimpleMoneyTrackerUnitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		EC1C53B12D574E6E00FC8974 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EC79626F2D414153008556CA /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -232,6 +332,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		EC1C53AF2D574E6E00FC8974 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EC79626D2D414153008556CA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,6 +363,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		EC1C53B82D574E6E00FC8974 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EC7962702D414153008556CA /* SimpleMoneyTracker */;
+			targetProxy = EC1C53B72D574E6E00FC8974 /* PBXContainerItemProxy */;
+		};
 		EC7962852D414155008556CA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = EC7962702D414153008556CA /* SimpleMoneyTracker */;
@@ -269,6 +381,42 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		EC1C53B92D574E6E00FC8974 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6AZRVAP866;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.borja.SimpleMoneyTrackerUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimpleMoneyTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SimpleMoneyTracker";
+			};
+			name = Debug;
+		};
+		EC1C53BA2D574E6E00FC8974 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6AZRVAP866;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.borja.SimpleMoneyTrackerUnitTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SimpleMoneyTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SimpleMoneyTracker";
+			};
+			name = Release;
+		};
 		EC7962952D414155008556CA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -521,6 +669,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		EC1C53BB2D574E6E00FC8974 /* Build configuration list for PBXNativeTarget "SimpleMoneyTrackerUnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC1C53B92D574E6E00FC8974 /* Debug */,
+				EC1C53BA2D574E6E00FC8974 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		EC79626C2D414153008556CA /* Build configuration list for PBXProject "SimpleMoneyTracker" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
