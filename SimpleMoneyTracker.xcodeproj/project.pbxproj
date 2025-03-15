@@ -62,6 +62,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Components/Calendar/DaysComponent.swift,
+				Components/Calendar/MonthView.swift,
 				Components/Calendar/WeekDateView.swift,
 				Components/Categories/CategoryCreateComponent.swift,
 				Components/Categories/CategorySelectorComponent.swift,

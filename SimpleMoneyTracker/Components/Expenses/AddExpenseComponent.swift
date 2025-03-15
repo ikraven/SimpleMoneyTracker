@@ -13,6 +13,7 @@ struct AddExpenseComponent: View {
     @State var category: Category
     @State var expense: Expense
     @State private var amountText: String = ""
+    @State private var comment: String = ""
     @Binding var isPresented: Bool
     @FocusState private var isTextFieldFocused: Bool
     
@@ -46,11 +47,10 @@ struct AddExpenseComponent: View {
         DatePicker("",selection: $expense.creationDate)
                 .labelsHidden()
                 .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-        HStack{
+        VStack{
             TextField("EUR", text: $amountText)
                 .keyboardType(.decimalPad)
                 .padding()
-                .frame(width: .infinity)
                 .font(.system(size: 100))
                 .multilineTextAlignment(.center)
                 .focused($isTextFieldFocused)
@@ -60,13 +60,23 @@ struct AddExpenseComponent: View {
                     }
                 }
                 .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                         isTextFieldFocused = true
                     }
                 }
-        }
-
-        HStack{
+            
+            HStack{
+                Text("Comentario:")
+                TextField("",text: $comment)
+                    .textFieldStyle(.plain)
+                    .onChange(of: comment) { oldvalue, newValue in
+                        if !newValue.isEmpty {
+                            expense.comment = comment
+                        }
+                        
+                    }
+            }
+            
             CustomButton(text:"Guardar", isValid: isFormValid){
                 expensesService.createExpense(expense: expense)
                 isPresented = false

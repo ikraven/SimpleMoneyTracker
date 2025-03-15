@@ -22,7 +22,7 @@ struct DaysComponent: View {
                     .padding(.bottom,1)
                 ZStack{
                         Circle()
-                            .fill(isCurrentDate ? Color.mainColor : .primary)
+                        .fill(isCurrentDate ? Color.mainColor.opacity(0.2) : .primary.opacity(0.2))
                             .frame(width: 45)
                             .opacity(isSelected ? 1 : 0)
                     Text(date.dayNumber())

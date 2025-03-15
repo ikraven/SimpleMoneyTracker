@@ -111,8 +111,29 @@ public class ExpensesService {
         }
     }
     
+    func getAggregateForMonth(for date: Date) -> [ExpenseAgregate]{
+        
+        let calendar = Calendar.current
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
+        let endOfMonth = calendar.date(byAdding: .month, value: 1, to: startOfMonth)!
+        print("\(startOfMonth)")
+        print("\(endOfMonth)")
+        let predicate = #Predicate<ExpenseAgregate> { expense in
+            expense.Month >= startOfMonth && expense.Month < endOfMonth
+         }
+         
+        let descriptor = FetchDescriptor<ExpenseAgregate>(predicate: predicate)
+         
+         do {
+             let expenses = try modelContext.fetch(descriptor)
+             print("\(expenses.count)")
+             return expenses
+         } catch {
+             print("Error fetching expenses for month: \(error)")
+             return []
+         }
+    }
     
-
     func getAllAgregates() -> [ExpenseAgregate]{
         return (try? modelContext.fetch(FetchDescriptor<ExpenseAgregate>())) ?? []
     }
@@ -154,9 +175,15 @@ public class ExpensesService {
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: expense.creationDate)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
-        let predicate = #Predicate<ExpenseAgregate> {  agregate in
-            agregate.Month >= startOfDay && agregate.Month < endOfDay
+        
+        // Use date range comparison that's compatible with SwiftData
+        let startOfDayForExpense = calendar.startOfDay(for: expense.creationDate)
+        let endOfDayForExpense = calendar.date(byAdding: .day, value: 1, to: startOfDayForExpense)!
+        
+        let predicate = #Predicate<ExpenseAgregate> { agregate in
+            agregate.Month >= startOfDayForExpense && agregate.Month < endOfDayForExpense
         }
+        
         let descriptor = FetchDescriptor<ExpenseAgregate>(
             predicate: predicate
         )
@@ -165,7 +192,7 @@ public class ExpensesService {
             let agregates = try modelContext.fetch(descriptor)
             if agregates.isEmpty {
                 let defaultAccount = ExpenseAgregate(
-                    Month: endOfDay,
+                    Month: startOfDay, // Use startOfDay instead of endOfDay for consistency
                     Ammount: expense.amount,
                     ExpensesCount: 1
                 )

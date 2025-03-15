@@ -21,6 +21,7 @@ struct SettingsView: View {
     @State var showSheet: Bool = false
     @State var showLimitSheet: Bool = false
     @State var showRecalculateSheet: Bool = false
+    @State var showAggregateData: Bool = false
     @State var expenseLimit: Double = 0
     var body: some View {
         List{
@@ -68,6 +69,13 @@ struct SettingsView: View {
                     _ = expensesService.recalculateExpensesAgregate()
                     
                 }
+                
+                HStack{
+                    Text("Mostrar Totales")
+                }
+                .onTapGesture {
+                    showAggregateData.toggle()
+                }
                 #endif
             }
         }//: LIST
@@ -104,7 +112,21 @@ struct SettingsView: View {
         }
         .sheet(isPresented: $showRecalculateSheet){
             ProgressView()
+        }
+        .sheet(isPresented: $showAggregateData){
+            let data = expensesService.getAllAgregates()
+            VStack{
+                ScrollView{
+                    ForEach(data){day in
+                        HStack{
+                            Text("\(day.Month)")
+                            Spacer()
+                            Text(day.Ammount.formatedAmount())
+                        }
+                    }
+                }
 
+            }
         }
     }
     func convertirMinutosAHora(_ minutos: Double) -> String {

@@ -41,7 +41,7 @@ struct WeekDateView: View {
     // Obtén las fechas para una semana específica
        private func datesForWeek(offset: Int) -> [Date] {
   
-           guard let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date())) else { return [] }
+           guard let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: selectedDay)) else { return [] }
 
            return (0..<7).compactMap { calendar.date(byAdding: .day, value: $0, to: startOfWeek) }
        }

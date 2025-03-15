@@ -26,6 +26,8 @@ struct DailyExpenseView: View {
     
     @State private var currentDate: Date = Date()
     
+    @State private var showMonth = false
+    
     // Separamos las variables de estado
         @GestureState private var dragTranslation: CGFloat = 0 // Para el arrastre en tiempo real
         @State private var dragOffsetAmount: CGFloat = 0     // Para el offset final del ZStack
@@ -49,11 +51,28 @@ struct DailyExpenseView: View {
                     }.padding(.trailing)
                 }
                 
-                WeekDateView(weekOffset: 0, selectedDay: $currentDate)
-                    .frame(height: 100)
-                    .onChange(of: currentDate ){oldValue, newValue in
-                        expenses = expensesService.getExpenses(for: currentDate)
+
+                ZStack {
+                    if showMonth {
+                        MonthView(date: currentDate, selectedDay: $currentDate)
+                            .onChange(of: currentDate) { oldValue, newValue in
+                                expenses = expensesService.getExpenses(for: currentDate)
+                                if showMonth{
+                                    dragOffsetAmount = 0
+                                    showMonth = false
+                                }
+                            }
+                            .transition(.opacity)
+                    } else {
+                        WeekDateView(weekOffset: 0, selectedDay: $currentDate)
+                            .frame(height: 100)
+                            .onChange(of: currentDate) { oldValue, newValue in
+                                expenses = expensesService.getExpenses(for: currentDate)
+                            }
+                            .transition(.opacity) // La vista entra/desaparece deslizándose
                     }
+                }
+                .animation(.easeInOut, value: showMonth) // Anima el cambio de showMonth
             }
             .background(Color(.systemGray6))
             
@@ -62,6 +81,19 @@ struct DailyExpenseView: View {
                 VStack{
                     // Superponemos el área de arrastre con ZStack
                     ZStack {
+                        // Área invisible para arrastre, superpuesta
+                        Color.clear
+                            .frame(height: 35) // Altura del área de arrastre
+                            .background(
+                                GeometryReader { geo in
+                                    Color.clear
+                                        .onAppear {
+                                            // Combinamos el marco del Rectangle con esta área
+                                            let clearFrame = geo.frame(in: .named("zstack"))
+                                            self.rectangleFrame = clearFrame
+                                        }
+                                }
+                            )
                         Rectangle()
                             .frame(width: 100, height: 2.5)
                             .padding(.top, 10)
@@ -76,25 +108,9 @@ struct DailyExpenseView: View {
                                 }
                             )
                         
-                        // Área invisible para arrastre, superpuesta
-                        Color.clear
-                            .frame(height: 50) // Altura del área de arrastre
-                            .background(
-                                GeometryReader { geo in
-                                    Color.clear
-                                        .onAppear {
-                                            // Combinamos el marco del Rectangle con esta área
-                                            let clearFrame = geo.frame(in: .named("zstack"))
-                                            self.rectangleFrame = self.rectangleFrame.union(clearFrame)
-                                        }
-                                }
-                            )
+
                     }
-                    .onTapGesture {
-                        if dragOffsetAmount >= 500{
-                            dragOffsetAmount = 0
-                        }
-                    }
+
                     
                     if expenses.isEmpty {
                         ContentUnavailableView("Gastos", systemImage: "plus.circle", description: Text("Añade tus gastos para llevar tu control de lo que gastas."))
@@ -113,6 +129,13 @@ struct DailyExpenseView: View {
                             ForEach(expenses) { expense in
                                 ExpenseDetailComponent(expense: expense)
                                     .contextMenu {
+                                        Button {
+                                            expensesService.deleteExpense(expense)
+                                            triggerHapticFeedback()
+                                            expenses = expensesService.getExpenses(for: currentDate)
+                                        } label: {
+                                            Label("Editar", systemImage: "pencil")
+                                        }
                                         Button {
                                             expensesService.deleteExpense(expense)
                                             triggerHapticFeedback()
@@ -155,14 +178,26 @@ struct DailyExpenseView: View {
             .background(Color(.systemGray6))
             .offset(y: dragOffsetAmount + dragTranslation) // Combinamos offset final y arrastre en tiempo real
             .animation(.interactiveSpring(), value: dragOffsetAmount)
+            .onTapGesture {
+                if showMonth{
+                    dragOffsetAmount = 0
+                    showMonth = false
+                }
+            }
             .gesture(
-              
                 DragGesture()
                     .updating($dragTranslation) { value, state, _ in
                         // Solo actualizamos si el arrastre comienza en el Rectangle
+
                         if rectangleFrame.contains(value.startLocation) && value.translation.height > 0 {
                             state = value.translation.height
                         }
+                        if(dragTranslation > 200 && !showMonth){
+                            state = 0
+                            showMonth = true
+                            triggerHapticFeedback()
+                        }
+                            
                     }
                     .onEnded { value in
                         // Finalizamos el offset solo si comenzó en el Rectangle
