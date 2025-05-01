@@ -10,13 +10,16 @@ import SwiftUI
 struct ExpenseCreateSheetView: View {
     
     @State private var selectedCategory: Category? // Guarda la categoría seleccionada
+    @Binding var editExpense: Expense? // Gasto que se editará o creará si es nulo
     @Binding var isPresented: Bool
     
+ 
     var body: some View {
         NavigationStack{
             if let category = selectedCategory {
-                AddExpenseComponent(category: category
-                                    ,isPresented: $isPresented)
+                AddExpenseComponent(expense: editExpense,
+                                    category: category,
+                                    isPresented: $isPresented)
                 
             }else {
                 CategorySelectorComponent{ selected in
@@ -25,11 +28,15 @@ struct ExpenseCreateSheetView: View {
             }
             
             
+        }.onAppear {
+            if let expense = editExpense {
+                selectedCategory = expense.category
+            }
         }
     }
 }
 
 
 #Preview {
-    ExpenseCreateSheetView(isPresented: .constant(false))
+    ExpenseCreateSheetView(editExpense: .constant(nil), isPresented: .constant(false))
 }

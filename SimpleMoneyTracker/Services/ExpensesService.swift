@@ -57,6 +57,19 @@ public class ExpensesService {
         
     }
     
+    /// Devuelte los gastos del dia 1 del mes hasta el dia dado
+    /// - Parameter date: Fecha de referencia para el mes del cual se quieren obtener los gastos
+    /// - Returns: Total de gastos para el mes especificado
+    func getPastPeriodExpenses(for date: Date) -> [Expense]{
+        let calendar = Calendar.current
+        let startOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: date))!
+        let startOfPastMonth = calendar.date(byAdding: .month, value: -1, to: startOfMonth)!
+        let pastMonthLastDay = calendar.date(byAdding: .month, value: -1, to: date)!
+        print("First past month Day ->  \(startOfPastMonth)")
+        print("Last past month Day ->  \(pastMonthLastDay)")
+        return getExpensesBetweenDates(beginDate: startOfPastMonth, endDate: pastMonthLastDay)
+        
+    }
     
     /// Obtiene todos los gastos de una fecha específica
     /// - Parameter date: Fecha desde la cual se quieren obtener los gastos
@@ -79,7 +92,7 @@ public class ExpensesService {
         return expenses.reduce(0.0) { $0 + $1.amount }
     }
     
-    // Agregar un nuevo gasto
+    /// Agregar un nuevo gasto
     func addExpense(amount: Double, date: Date, category: Category) {
         let expense = Expense( amount: amount, date: date, category: category)
         modelContext.insert(expense)
@@ -139,9 +152,31 @@ public class ExpensesService {
     }
     // MARK: - Escritura
     
-    func createExpense(expense: Expense){
-        modelContext.insert(expense)
-        UpdateCreateAgregate(for: expense)
+    /// Crea o actualiza un gasto
+    /// - Parameter expense: Gasto a crear o editar
+    func createOrUpdateExpense(expense: Expense) {
+        let expenseID = expense.id
+        let predicate = #Predicate<Expense> { $0.id == expenseID }
+        let descriptor = FetchDescriptor<Expense>(predicate: predicate)
+
+        do {
+            let results = try modelContext.fetch(descriptor)
+            if let existingExpense = results.first {
+                existingExpense.amount = expense.amount
+                existingExpense.creationDate = expense.creationDate
+                existingExpense.comment = expense.comment
+                existingExpense.category = expense.category
+                let ammountDiff = existingExpense.amount - expense.amount
+                UpdateCreateAgregate(for: expense, with: ammountDiff)
+            } else {
+                modelContext.insert(expense)
+                UpdateCreateAgregate(for: expense)
+            }
+            try modelContext.save()
+           
+        } catch {
+            print("Error during createOrUpdateExpense: \(error)")
+        }
     }
     
     
@@ -171,7 +206,7 @@ public class ExpensesService {
     }
     
     
-    private func UpdateCreateAgregate(for expense: Expense){
+    private func UpdateCreateAgregate(for expense: Expense, with diff: Double? = nil){
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: expense.creationDate)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
@@ -191,18 +226,20 @@ public class ExpensesService {
         do{
             let agregates = try modelContext.fetch(descriptor)
             if agregates.isEmpty {
+                //Creamos entrada
                 let defaultAccount = ExpenseAgregate(
                     Month: startOfDay, // Use startOfDay instead of endOfDay for consistency
-                    Ammount: expense.amount,
+                    Ammount: diff ?? expense.amount,
                     ExpensesCount: 1
                 )
                 modelContext.insert(defaultAccount)
                 try modelContext.save()
                 print("Agregado creado \(defaultAccount.Month) => \(defaultAccount.Ammount) ")
             }else{
+                //Modificamos entrada
                 let agregate = agregates.first!
                 agregate.ExpensesCount += 1
-                agregate.Ammount += expense.amount
+                agregate.Ammount += diff ??  expense.amount
                 try modelContext.save()
                 print("Agregado actualizado \(agregate.Month) => \(agregate.Ammount) => \(agregate.ExpensesCount)")
             }

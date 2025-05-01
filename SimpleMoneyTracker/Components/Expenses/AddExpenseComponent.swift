@@ -22,9 +22,13 @@ struct AddExpenseComponent: View {
     }
     
     
-    init(category: Category, isPresented: Binding<Bool>) {
+    init(expense: Expense? = nil, category: Category, isPresented: Binding<Bool>) {
         self._category = State(initialValue: category)
-        self._expense = State(initialValue: Expense(amount: 0, date: Date(), category: category))
+        if let expense = expense {
+            self._expense = State(initialValue: expense)
+        } else {
+            self._expense = State(initialValue: Expense(amount: 0, date: Date(), category: category))
+        }
         self._isPresented = isPresented
     }
 
@@ -78,7 +82,7 @@ struct AddExpenseComponent: View {
             }
             
             CustomButton(text:"Guardar", isValid: isFormValid){
-                expensesService.createExpense(expense: expense)
+                expensesService.createOrUpdateExpense(expense: expense)
                 isPresented = false
                 triggerHapticFeedback()
             }
@@ -94,8 +98,15 @@ struct AddExpenseComponent: View {
     }
 }
 
-#Preview {
+#Preview("Empty Expense") {
     let sampleCategory: Category = Category(id: UUID(), name: "Monster", color: "E7575E" , emoji: "💧")
     
     AddExpenseComponent(category: sampleCategory, isPresented: .constant(true))
+}
+
+#Preview("Edit expense") {
+    let sampleCategory: Category = PreviewMockData.shared.sampleExpenses[0].category
+    let sampleExpense = PreviewMockData.shared.sampleExpenses[0]
+    
+    AddExpenseComponent(expense: sampleExpense, category: sampleCategory, isPresented: .constant(true))
 }

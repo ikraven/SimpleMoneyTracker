@@ -258,38 +258,36 @@
             endingLineNumber = "115"
             landmarkName = "getDatesSummary(for:with:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "7B1FE92C-E75B-4997-857C-46EA14508534"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SimpleMoneyTracker/Services/ExpensesService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "25"
-            endingLineNumber = "25"
-            landmarkName = "getExpenseByMonth(for:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "F52BE6E5-B8CE-4333-B05C-24418DF84E3B"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SimpleMoneyTracker/Services/ExpensesService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "40"
-            endingLineNumber = "40"
-            landmarkName = "getExpenseByMonth(for:)"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6E7F8508-C075-4EBA-81BD-F3A817FFF65B - 51ea3b796f1f0ad4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SimpleMoneyTracker.ExpensesSummaryService.getDatesSummary(for: Foundation.UUID, with: Foundation.Date) -&gt; Swift.Array&lt;SimpleMoneyTracker.DateSummaryExpense&gt;"
+                  moduleName = "SimpleMoneyTracker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/borjasunen/Documents/GitHub/SimpleMoneyTracker/SimpleMoneyTracker/Services/ExpensesSummaryService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "115"
+                  endingLineNumber = "115">
+               </Location>
+               <Location
+                  uuid = "6E7F8508-C075-4EBA-81BD-F3A817FFF65B - a732f4cfadf16fc8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #6 (Foundation.Date, Swift.Double) -&gt; SimpleMoneyTracker.DateSummaryExpense in SimpleMoneyTracker.ExpensesSummaryService.getDatesSummary(for: Foundation.UUID, with: Foundation.Date) -&gt; Swift.Array&lt;SimpleMoneyTracker.DateSummaryExpense&gt;"
+                  moduleName = "SimpleMoneyTracker.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/borjasunen/Documents/GitHub/SimpleMoneyTracker/SimpleMoneyTracker/Services/ExpensesSummaryService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "115"
+                  endingLineNumber = "115">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -311,48 +309,64 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "56F8C158-4D36-4547-94E4-F52C9A1A6357"
+            uuid = "904A17DA-9CB3-4283-B82F-ED5895046FFB"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../../../../var/folders/m0/jttn2y3946g4lfd7yrv4n3zw0000gn/T/swift-generated-sources/@__swiftmacro_18SimpleMoneyTracker0026ExpensesServiceswift_DsAGgfMX157_24_9PredicatefMf_.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1"
+            endingLineNumber = "1"
+            landmarkName = "createOrUpdateExpense(expense:)"
+            landmarkType = "37">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "946DE3BA-1E52-4974-86E4-B7D3186D4B99"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SimpleMoneyTracker/Services/ExpensesService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
-            landmarkName = "UpdateCreateAgregate(for:)"
+            startingLineNumber = "169"
+            endingLineNumber = "169"
+            landmarkName = "createOrUpdateExpense(expense:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "144B9376-01DF-414B-A391-7B56C73EEC5F"
+            uuid = "B106F35E-D15D-414A-B290-5D43A6CE2E60"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SimpleMoneyTracker/Services/ExpensesService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "157"
-            endingLineNumber = "157"
-            landmarkName = "recalculateExpensesAgregate()"
+            startingLineNumber = "170"
+            endingLineNumber = "170"
+            landmarkName = "createOrUpdateExpense(expense:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "3798E48D-6F03-4E79-95C5-62726F0A8681"
-            shouldBeEnabled = "No"
+            uuid = "EC2A196A-38E1-466D-BDBF-55CB1B645F47"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SimpleMoneyTracker/Services/ExpensesService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "203"
-            endingLineNumber = "203"
-            landmarkName = "UpdateCreateAgregate(for:)"
+            startingLineNumber = "242"
+            endingLineNumber = "242"
+            landmarkName = "UpdateCreateAgregate(for:with:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

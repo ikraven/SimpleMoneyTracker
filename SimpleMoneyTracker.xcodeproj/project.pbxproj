@@ -46,6 +46,7 @@
 				Models/Category.swift,
 				Models/Expense.swift,
 				Models/ExpenseAgregate.swift,
+				Models/Planning.swift,
 			);
 			target = EC7962822D414155008556CA /* SimpleMoneyTrackerTests */;
 		};
@@ -55,6 +56,7 @@
 				Models/Account.swift,
 				Models/Category.swift,
 				Models/ExpenseAgregate.swift,
+				Models/Planning.swift,
 			);
 			target = EC1C53B22D574E6E00FC8974 /* SimpleMoneyTrackerUnitTests */;
 		};
@@ -74,7 +76,9 @@
 				Models/Category.swift,
 				Models/Expense.swift,
 				Models/ExpenseAgregate.swift,
+				Models/Planning.swift,
 				Views/Categories/ExpenseCategoryListView.swift,
+				Views/Expenses/ButtonTip.swift,
 				Views/Expenses/DailyExpenseView.swift,
 				Views/Expenses/ExpensesListView.swift,
 			);

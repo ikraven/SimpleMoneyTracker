@@ -54,13 +54,14 @@ private struct HomeViewContainer: View {
                             )
                             .padding(.bottom)
                             
-                            
-                            TotalMonthExpenseComponent(
-                                currentDate: Date(),
-                                currentExpense: viewModel.currentMonthExpense,
-                                pastExpense: viewModel.previousMonthExpense
-                            )
-                            .padding(.bottom)
+                            NavigationLink(destination: MonthExpenseCompareView()){
+                                TotalMonthExpenseComponent(
+                                    currentDate: Date(),
+                                    currentExpense: viewModel.currentMonthExpense,
+                                    pastExpense: viewModel.previousMonthExpense
+                                )
+                                .padding(.bottom)
+                            }.buttonStyle(PlainButtonStyle())
                             
                             
                             MonthExpensesChart(categories: Array(viewModel.categoryAmmount.prefix(4)))

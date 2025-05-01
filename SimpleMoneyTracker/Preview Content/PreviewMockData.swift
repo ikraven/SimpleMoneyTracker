@@ -25,16 +25,26 @@ class PreviewMockData{
     
     let dogFoodCategory: Category
     
+    let selfCategory: Category
     
     //MARK: - Expenses
     let sampleExpenses: [Expense]
+    
+     
+    //MARK: - PlanningExpense
+    let gymPlanningExpense: Planning
     
     //MARK: - Container
     
     private init() {
             self.monsterCategory = Category(id: UUID(), name: "Monster", color: Color.green.toHex() , emoji: "🔋")
             self.dogFoodCategory = Category(id: UUID(), name: "Dog Food", color: Color.blue.toHex() , emoji: "🐶")
-
+            self.selfCategory = Category(id: UUID(), name: "Self Care", color: Color.red.toHex() , emoji: "🏋")
+        
+        
+        
+        self.gymPlanningExpense = Planning(PlanningCategory: selfCategory, PlanningName: "Gym", Ammount: 77.5, _dayNumber: 10)
+        
             self.sampleExpenses =
             [
                 Expense(amount: 2, date: Date(), category: monsterCategory),

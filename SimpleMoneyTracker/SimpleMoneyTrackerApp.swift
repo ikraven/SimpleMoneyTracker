@@ -15,7 +15,8 @@ struct SimpleMoneyTrackerApp: App {
             Category.self,
             Expense.self,
             ExpenseAgregate.self,
-            Account.self
+            Account.self,
+            Planning.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

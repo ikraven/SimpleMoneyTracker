@@ -7,6 +7,8 @@
 
 import SwiftUI
 import SwiftData
+import TipKit
+
 
 struct DailyExpenseView: View {
     @Environment(\.modelContext) private var modelContext
@@ -28,11 +30,30 @@ struct DailyExpenseView: View {
     
     @State private var showMonth = false
     
+    // Variable para editar
+    @State private var editExpense: Expense? = nil
+    
     // Separamos las variables de estado
         @GestureState private var dragTranslation: CGFloat = 0 // Para el arrastre en tiempo real
         @State private var dragOffsetAmount: CGFloat = 0     // Para el offset final del ZStack
         @State private var contentOffset: CGFloat = 0        // Para el offset del ScrollView
         @State private var rectangleFrame: CGRect = .zero    // Marco del Rectangle
+    
+    let buttonTip = ButtonTip()
+    
+    func setupTips() {
+      do {
+        try Tips.configure([
+          .displayFrequency(.immediate)
+        ])
+      } catch {
+        print("Error initializing TipKit \(error.localizedDescription)")
+      }
+    }
+    
+    init(){
+        setupTips()
+    }
     
     
     var body: some View {
@@ -83,7 +104,7 @@ struct DailyExpenseView: View {
                     ZStack {
                         // Área invisible para arrastre, superpuesta
                         Color.clear
-                            .frame(height: 35) // Altura del área de arrastre
+                            .frame(height: 15) // Altura del área de arrastre
                             .background(
                                 GeometryReader { geo in
                                     Color.clear
@@ -107,11 +128,9 @@ struct DailyExpenseView: View {
                                         }
                                 }
                             )
-                        
-
+                           
                     }
-
-                    
+                    .popoverTip(buttonTip)
                     if expenses.isEmpty {
                         ContentUnavailableView("Gastos", systemImage: "plus.circle", description: Text("Añade tus gastos para llevar tu control de lo que gastas."))
                             .onTapGesture {
@@ -130,9 +149,8 @@ struct DailyExpenseView: View {
                                 ExpenseDetailComponent(expense: expense)
                                     .contextMenu {
                                         Button {
-                                            expensesService.deleteExpense(expense)
-                                            triggerHapticFeedback()
-                                            expenses = expensesService.getExpenses(for: currentDate)
+                                            editExpense = expense
+                                            isSheetPresented.toggle()
                                         } label: {
                                             Label("Editar", systemImage: "pencil")
                                         }
@@ -154,6 +172,7 @@ struct DailyExpenseView: View {
 
                 }
                 Button {
+                    editExpense = nil
                     isSheetPresented.toggle()
                 } label: {
                     Image(systemName: "plus")
@@ -228,7 +247,7 @@ struct DailyExpenseView: View {
             expenses = expensesService.getExpenses(for: currentDate)
         }
         .sheet(isPresented: $isSheetPresented){
-            ExpenseCreateSheetView(isPresented: $isSheetPresented)
+            ExpenseCreateSheetView(editExpense: $editExpense, isPresented: $isSheetPresented)
                 .onDisappear{
                     expenses = expensesService.getExpenses(for: currentDate)
                 }
@@ -243,7 +262,10 @@ struct DailyExpenseView: View {
         let generator = UINotificationFeedbackGenerator()
         generator.notificationOccurred(.success)  // Puede ser .success, .warning o .error
     }
+    
 }
+
+
 
 #Preview("Data") {
     
