@@ -19,9 +19,20 @@ struct PlanningCardComponent: View {
                             .font(.headline)
                     }
 
-            Text("Día \(expensePlannning.dayNumber)")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+            switch expensePlannning.period {
+            case .weekly:
+                Text("cada \(expensePlannning.weekDayNumber!)")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+            case .monthly:
+                Text("Día \(expensePlannning.dayNumber!) de cada mes")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                
+            case .yearly:
+                Text("No data")
+            }
+           
 
                     Spacer()
 

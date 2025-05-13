@@ -13,7 +13,7 @@ extension Date
     func dayOfWeek() -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "es_ES")
-        formatter.dateFormat = "EEEEE" // Día de la semana
+        formatter.dateFormat = "EEE" // Día de la semana
         return formatter.string(from: self)
     }
     

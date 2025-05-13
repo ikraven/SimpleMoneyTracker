@@ -17,28 +17,30 @@ struct DaysComponent: View {
     var body: some View {
         ZStack {
             VStack {
+                Text(date.dayNumber())
+                        .font(.headline)
+                        .foregroundColor(isSelected ? .primary : .secondary)
                 Text(date.dayOfWeek())
                     .font(.subheadline)
+                    .foregroundColor(getColor(isCurrentDate: isCurrentDate, isSelected: isSelected))
                     .padding(.bottom,1)
-                ZStack{
-                        Circle()
-                        .fill(isCurrentDate ? Color.mainColor.opacity(0.2) : .primary.opacity(0.2))
-                            .frame(width: 45)
-                            .opacity(isSelected ? 1 : 0)
-                    Text(date.dayNumber())
-                        .font(.headline)
-                        .foregroundColor(getColor(isCurrentDate: isCurrentDate, isSelected: isSelected))
-                }
-                    
             }
+            .frame(width: 35, height: 50)
+            .cornerRadius(12) // Esquinas más redondeadas
+            .shadow(color: .gray.opacity(0.2), radius: 5, x: 0, y: 2) // Sombra suave
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                    .opacity(isSelected ? 1 : 0)
+            )
         }
     }
     func getColor(isCurrentDate: Bool, isSelected: Bool) -> Color {
         switch (isCurrentDate, isSelected) {
-        case (true, true): return .primary
+        case (true, true): return .mainColor
         case (true, false): return .mainColor
-        case (false, true): return Color(UIColor.systemBackground)
-        case (false, false): return .primary
+        case (false, true): return .primary
+        case (false, false): return .secondary
         }
     }
 }

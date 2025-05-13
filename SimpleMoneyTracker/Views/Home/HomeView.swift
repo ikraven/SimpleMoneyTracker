@@ -64,7 +64,13 @@ private struct HomeViewContainer: View {
                             }.buttonStyle(PlainButtonStyle())
                             
                             
-                            MonthExpensesChart(categories: Array(viewModel.categoryAmmount.prefix(4)))
+                            NavigationLink(destination: SummaryView()){
+                                MonthExpensesChart(
+                                    categories: Array(viewModel.categoryAmmount.prefix(4))
+                                ).padding(.bottom)
+                            }.buttonStyle(PlainButtonStyle())
+                            
+                            
                             
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)

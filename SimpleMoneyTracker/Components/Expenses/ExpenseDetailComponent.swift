@@ -12,39 +12,39 @@ struct ExpenseDetailComponent: View {
     
     var body: some View {
             HStack {
-                Text(expense.category.emoji!)
-                    .font(.title2) // Emoji más grande
-                    .padding(.leading)
-                
-                VStack(alignment: .leading) {
-                    Text(expense.category.name)
-                        .foregroundColor(expense.category.getColor())
-                        .font(.title3) // Tamaño mayor que headline
-                        .fontWeight(.bold) // En negrita para destacar
+                        Color(hex: expense.category.color)
+                            .frame(width: 15, height: 200)
+                        Text(expense.category.emoji!)
+                            .font(.title2) // Emoji más grande
+               
+                        
+                        
+                        VStack(alignment: .leading) {
+                            Text(expense.category.name)
+                                .font(.title3) // Tamaño mayor que headline
+                                .fontWeight(.bold) // En negrita para destacar
+                            
+                            Text(expense.creationDate.dayHour())
+                                .font(.subheadline)
+                        }
+                        .padding(.vertical, 5) // Padding vertical más compacto
+                        
+                        if let comment = expense.comment {
+                            Text(comment)
+                                .font(.subheadline)
+                                .lineLimit(1) // Limitar a una línea
+                                .truncationMode(.tail) // Truncar con "..." si es largo
+                        }
+                        
+                        Spacer()
+                        
+                        Text(expense.formatedAmount())
+                            .font(.title3) // Tamaño mayor que headline
+                            .fontWeight(.bold) // En negrita para destacar
+                            .padding(.trailing)
                     
-                    Text(expense.creationDate.dayHour())
-                        .foregroundColor(expense.category.getColor().opacity(0.8))
-                        .font(.subheadline)
-                }
-                .padding(.vertical, 5) // Padding vertical más compacto
-                
-                if let comment = expense.comment {
-                    Text(comment)
-                        .foregroundColor(expense.category.getColor().opacity(0.8))
-                        .font(.subheadline)
-                        .lineLimit(1) // Limitar a una línea
-                        .truncationMode(.tail) // Truncar con "..." si es largo
-                }
-                
-                Spacer()
-                
-                Text(expense.formatedAmount())
-                    .foregroundColor(expense.category.getColor())
-                    .font(.title3) // Tamaño mayor que headline
-                    .fontWeight(.bold) // En negrita para destacar
-                    .padding(.trailing)
             }
-            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: 50)
             .padding(.vertical, 10) // Padding vertical ajustado
             .background(expense.category.getColor().opacity(0.15)) // Fondo más sutil
             .cornerRadius(12) // Esquinas más redondeadas

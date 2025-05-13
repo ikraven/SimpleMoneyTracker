@@ -16,7 +16,9 @@ public class CategoryService{
         self.modelContext = modelContext
     }
     
-    
+    func GetAllCategoties() -> [Category]{
+        return (try? modelContext.fetch(FetchDescriptor<Category>())) ?? []
+    }
     func CreateUpdateCategory(for category: Category) -> Bool{
         do {
             let categoryId = category.id

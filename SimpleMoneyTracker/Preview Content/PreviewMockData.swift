@@ -41,9 +41,7 @@ class PreviewMockData{
             self.dogFoodCategory = Category(id: UUID(), name: "Dog Food", color: Color.blue.toHex() , emoji: "🐶")
             self.selfCategory = Category(id: UUID(), name: "Self Care", color: Color.red.toHex() , emoji: "🏋")
         
-        
-        
-        self.gymPlanningExpense = Planning(PlanningCategory: selfCategory, PlanningName: "Gym", Ammount: 77.5, _dayNumber: 10)
+        self.gymPlanningExpense = Planning(PlanningCategory: selfCategory, PlanningName: "Gym", Ammount: 77.5, period: .monthly, dayNumber: 10)
         
             self.sampleExpenses =
             [
@@ -66,5 +64,3 @@ class PreviewMockData{
         }
     
 }
-
-
